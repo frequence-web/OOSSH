@@ -7,6 +7,11 @@ use \OOSSH\Authentication\AuthenticationInterface;
 
 class Connection
 {
+    const FINGERPRINT_MD5 = SSH2_FINGERPRINT_MD5,
+          FINGERPRINT_SHA1 = SSH2_FINGERPRINT_SHA1,
+          FINGERPRINT_HEX = SSH2_FINGERPRINT_HEX,
+          FINGERPRINT_RAW = SSH2_FINGERPRINT_RAW;
+
     /**
      * @var resource
      */
@@ -55,6 +60,17 @@ class Connection
 
         if (false === $this->resource) {
             throw new Exception\ConnectionRefused();
+        }
+
+        return $this;
+    }
+
+    public function check($fingerprint, $flags = null)
+    {
+        $flags = nulll === $flags ? self::FINGERPRINT_MD5 | self::FINGERPRINT_HEX : $flags;
+
+        if (ssh2_fingerprint($this->resource, $flags) !== $fingerprint) {
+            throw new Exception\BadFingerprint;
         }
 
         return $this;
