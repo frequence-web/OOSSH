@@ -1,6 +1,6 @@
 <?php
 
-namespace OOSSH\Authentication;
+namespace OOSSH\SSH2\Authentication;
 
 use \OOSSH\Authentication\AuthenticationInterface;
 use \OOSSH\Exception as Exception;

@@ -32,6 +32,8 @@ class Connection
      */
     protected $isAuthenticated;
 
+    protected $isConnected;
+
     protected $isInBlock;
 
     protected $commands;
@@ -45,6 +47,7 @@ class Connection
         $this->hostname = $hostname;
         $this->port = $port;
         $this->isAuthenticated = false;
+        $this->isConnected = false;
         $this->isInBlock = false;
         $this->commands = array();
     }
@@ -61,6 +64,8 @@ class Connection
         if (false === $this->resource) {
             throw new Exception\ConnectionRefused();
         }
+
+        $this->isConnected = true;
 
         return $this;
     }
@@ -143,5 +148,26 @@ class Connection
         call_user_func($callback, stream_get_contents($stdio), stream_get_contents($stderr));
 
         return $this;
+    }
+
+    /**
+     * @param boolean $isAuthenticated
+     */
+    public function setIsAuthenticated($isAuthenticated)
+    {
+        $this->isAuthenticated = $isAuthenticated;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAuthenticated()
+    {
+        return $this->isAuthenticated;
+    }
+
+    public function isConnected()
+    {
+        return $this->isConnected;
     }
 }
