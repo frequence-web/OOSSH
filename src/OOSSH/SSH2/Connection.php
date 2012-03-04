@@ -7,10 +7,11 @@ use \OOSSH\Authentication\AuthenticationInterface;
 
 class Connection
 {
-    const FINGERPRINT_MD5 = SSH2_FINGERPRINT_MD5,
-          FINGERPRINT_SHA1 = SSH2_FINGERPRINT_SHA1,
-          FINGERPRINT_HEX = SSH2_FINGERPRINT_HEX,
-          FINGERPRINT_RAW = SSH2_FINGERPRINT_RAW;
+    const
+        FINGERPRINT_MD5  = SSH2_FINGERPRINT_MD5,
+        FINGERPRINT_SHA1 = SSH2_FINGERPRINT_SHA1,
+        FINGERPRINT_HEX  = SSH2_FINGERPRINT_HEX,
+        FINGERPRINT_RAW  = SSH2_FINGERPRINT_RAW;
 
     /**
      * @var resource
@@ -44,17 +45,17 @@ class Connection
      */
     public function __construct($hostname, $port = 22)
     {
-        $this->hostname = $hostname;
-        $this->port = $port;
+        $this->hostname        = $hostname;
+        $this->port            = $port;
         $this->isAuthenticated = false;
-        $this->isConnected = false;
-        $this->isInBlock = false;
-        $this->commands = array();
+        $this->isConnected     = false;
+        $this->isInBlock       = false;
+        $this->commands        = array();
     }
 
     /**
      * @throws \OOSH\Exception\ConnectionRefused
-     * 
+     *
      * @return Connection
      */
     public function connect()
@@ -124,6 +125,7 @@ class Connection
         }
 
         $this->isInBlock = false;
+        $this->commands  = array();
 
         return $this;
     }

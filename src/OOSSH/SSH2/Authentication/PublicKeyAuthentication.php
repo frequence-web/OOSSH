@@ -35,10 +35,10 @@ class PublicKeyAuthentication implements AuthenticationInterface
      */
     function __construct($username, $pubkeyFile, $privkeyFile, $passphrase = null)
     {
-        $this->username = $username;
-        $this->pubkeyFile = $pubkeyFile;
+        $this->username    = $username;
+        $this->pubkeyFile  = $pubkeyFile;
         $this->privkeyFile = $privkeyFile;
-        $this->passphrase = $passphrase;
+        $this->passphrase  = $passphrase;
     }
 
     public function authenticate($resource)
