@@ -20,6 +20,7 @@ Basic Usage
           ->exec('cd /var/www')
           ->exec('mv foo bar')
           ->exec('rm -rf cache/*')
+          ->exec('exit')
         ->end();
 
 TODO

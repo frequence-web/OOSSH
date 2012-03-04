@@ -2,8 +2,8 @@
 
 namespace OOSSH\SSH2;
 
-use \OOSSH\Exception as Exception;
-use \OOSSH\Authentication\AuthenticationInterface;
+use OOSSH\Authentication\AuthenticationInterface,
+    OOSSH\Exception as Exception;
 
 class Connection
 {
@@ -73,9 +73,9 @@ class Connection
 
     public function check($fingerprint, $flags = null)
     {
-        $flags = nulll === $flags ? self::FINGERPRINT_MD5 | self::FINGERPRINT_HEX : $flags;
+        $flags = null === $flags ? self::FINGERPRINT_MD5 | self::FINGERPRINT_HEX : $flags;
 
-        if (ssh2_fingerprint($this->resource, $flags) !== $fingerprint) {
+        if (strtoupper(ssh2_fingerprint($this->resource, $flags)) !== strtoupper($fingerprint)) {
             throw new Exception\BadFingerprint;
         }
 
@@ -114,10 +114,10 @@ class Connection
 
     public function end($callback = null)
     {
-        $stream = ssh2_shell($this->resource);
+        $stream = fopen(sprintf('ssh2.shell://%s/xterm', $this->resource), 'r+');
 
         foreach ($this->commands as $command) {
-            fwrite($stream, $command.PHP_EOL);
+            fwrite($stream, $command."\n");
         }
 
         if (null !== $callback) {
@@ -143,7 +143,7 @@ class Connection
             throw new \InvalidArgumentException('$callback must be a callable');
         }
 
-        $stdio = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+        $stdio  = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
         $stderr = ssh2_fetch_stream($stream, SSH2_STREAM_STDERR);
         stream_set_blocking($stdio, 1);
         stream_set_blocking($stderr, 1);

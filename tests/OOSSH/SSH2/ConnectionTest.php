@@ -32,27 +32,28 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     protected function connectAndAuth()
     {
         $this->object->connect();
-        $this->object->authenticate(new \OOSSH\SSH2\Authentication\PasswordAuthentication(TEST_USER, TEST_PASSWORD));
+        $this->object->authenticate(new \OOSSH\SSH2\Authentication\Password(TEST_USER, TEST_PASSWORD));
     }
 
-    /**
-     *
-     */
     public function testConnect()
     {
         $this->object->connect();
         $this->assertTrue($this->object->isConnected());
     }
 
-    /**
-     * @todo Implement testCheck().
-     */
     public function testCheck()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->object->connect();
+        $this->object->check(TEST_FINGERPRINT);
+    }
+
+    /**
+     * @expectedException \OOSSH\Exception\BadFingerprint
+     */
+    public function testCheckFail()
+    {
+        $this->connectAndAuth();
+        $this->object->check('0');
     }
 
     /**
@@ -66,39 +67,30 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->object->isAuthenticated());
     }
 
-    /**
-     * @todo Implement testExec().
-     */
     public function testExec()
     {
-        $this->connectAndAuth();
-
         $that = $this;
-
-        $this->object->exec('uname -a', function($stdio, $stderr) use($that) { $that->assertInternalType('string', $stdio); });
+        $this->connectAndAuth();
+        $this->object->exec('uname -a', function($stdio) use($that) { $that->assertInternalType('string', $stdio); });
     }
 
-    /**
-     * @todo Implement testBegin().
-     */
     public function testBlock()
     {
-        $this->connectAndAuth();
-
         $that = $this;
-
-        $this->object->begin()
-            ->exec('pwd')
-        ->end(function($stdio, $stderr) use($that) { $that->assertInternalType('string', $stdio); });
+        $this->connectAndAuth();
+        $this->object
+            ->begin()
+                ->exec('pwd')
+                ->exec('exit')
+            ->end(function($stdio) use($that) { $that->assertInternalType('string', $stdio); })
+        ;
     }
-
 
     public function providerAuthenticate()
     {
         return array(
-            array(new \OOSSH\SSH2\Authentication\PasswordAuthentication(TEST_USER, TEST_PASSWORD)),
-            array(new \OOSSH\SSH2\Authentication\PublicKeyAuthentication(TEST_USER, TEST_PUBKEY_FILE, TEST_PRIVKEY_FILE)),
+            array(new \OOSSH\SSH2\Authentication\Password(TEST_USER, TEST_PASSWORD)),
+            array(new \OOSSH\SSH2\Authentication\PublicKey(TEST_USER, TEST_PUBKEY_FILE, TEST_PRIVKEY_FILE)),
         );
     }
 }
-?>

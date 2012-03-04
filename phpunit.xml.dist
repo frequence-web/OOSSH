@@ -24,10 +24,11 @@
     </filter>
 
     <php>
-        <const name="TEST_HOST" value="::1" />
-        <const name="TEST_USER" value="test_ssh" />
-        <const name="TEST_PASSWORD" value="test_ssh" />
-        <const name="TEST_PUBKEY_FILE" value="~/.ssh/id_rsa.pub" />
+        <const name="TEST_HOST"         value="::1" />
+        <const name="TEST_USER"         value="test_ssh" />
+        <const name="TEST_PASSWORD"     value="test_ssh" />
+        <const name="TEST_PUBKEY_FILE"  value="~/.ssh/id_rsa.pub" />
         <const name="TEST_PRIVKEY_FILE" value="~/.ssh/id_rsa" />
+        <const name="TEST_FINGERPRINT"  value="00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00" />
     </php>
 </phpunit>
