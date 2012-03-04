@@ -1,0 +1,18 @@
+{
+    "version": "1.0.0",
+    "name": "yohang/oossh",
+    "description": "Object Oriented SSH for PHP",
+    "keywords": ["ssh"],
+    "homepage": "https://github.com/frequence-web/OOSSH",
+    "type": "library",
+    "license": "MIT",
+    "authors": [{
+        "name": "Yohan GIARELLI",
+        "email": "yohan@giarel.li",
+        "homepage": "http://yohan.giarel.li"
+    }],
+
+    "autoload": {
+        "psr-0": { "OOSSH": "src/" }
+    }
+}
