@@ -88,9 +88,12 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function providerAuthenticate()
     {
+	if (!defined('TEST_PASSPHRASE')) {
+		define('TEST_PASSPHRASE', null);
+	}
         return array(
             array(new \OOSSH\SSH2\Authentication\Password(TEST_USER, TEST_PASSWORD)),
-            array(new \OOSSH\SSH2\Authentication\PublicKey(TEST_USER, TEST_PUBKEY_FILE, TEST_PRIVKEY_FILE)),
+            array(new \OOSSH\SSH2\Authentication\PublicKey(TEST_USER, TEST_PUBKEY_FILE, TEST_PRIVKEY_FILE, TEST_PASSPHRASE)),
         );
     }
 }
