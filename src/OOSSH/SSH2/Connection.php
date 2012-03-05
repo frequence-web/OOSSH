@@ -60,7 +60,7 @@ class Connection
      */
     public function connect()
     {
-        $this->resource = ssh2_connect($this->hostname, $this->port);
+        $this->resource = \ssh2_connect($this->hostname, $this->port);
 
         if (false === $this->resource) {
             throw new Exception\ConnectionRefused();
@@ -75,7 +75,7 @@ class Connection
     {
         $flags = null === $flags ? self::FINGERPRINT_MD5 | self::FINGERPRINT_HEX : $flags;
 
-        if (strtoupper(ssh2_fingerprint($this->resource, $flags)) !== strtoupper($fingerprint)) {
+        if (strtoupper(\ssh2_fingerprint($this->resource, $flags)) !== strtoupper($fingerprint)) {
             throw new Exception\BadFingerprint;
         }
 
@@ -96,7 +96,7 @@ class Connection
             return $this->addCommand($command);
         }
 
-        $stream = ssh2_exec($this->resource, $command);
+        $stream = \ssh2_exec($this->resource, $command);
 
         if (null !== $callback) {
             $this->callCallback($stream, $callback);
@@ -143,8 +143,8 @@ class Connection
             throw new \InvalidArgumentException('$callback must be a callable');
         }
 
-        $stdio  = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
-        $stderr = ssh2_fetch_stream($stream, SSH2_STREAM_STDERR);
+        $stdio  = \ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
+        $stderr = \ssh2_fetch_stream($stream, SSH2_STREAM_STDERR);
         stream_set_blocking($stdio, 1);
         stream_set_blocking($stderr, 1);
         call_user_func($callback, stream_get_contents($stdio), stream_get_contents($stderr));

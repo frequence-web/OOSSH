@@ -40,7 +40,7 @@ class Password implements AuthenticationInterface
      */
     public function authenticate($resource)
     {
-        if (!ssh2_auth_password($resource, $this->username, $this->password)) {
+        if (!\ssh2_auth_password($resource, $this->username, $this->password)) {
             throw new Exception\AuthenticationFailed;
         }
     }

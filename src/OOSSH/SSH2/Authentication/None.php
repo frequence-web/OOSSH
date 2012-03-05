@@ -28,7 +28,7 @@ class None implements AuthenticationInterface
      */
     public function authenticate($resource)
     {
-        if (true !== ssh2_auth_none($resource, $this->username)) {
+        if (true !== \ssh2_auth_none($resource, $this->username)) {
             throw new AuthenticationFailed;
         }
     }

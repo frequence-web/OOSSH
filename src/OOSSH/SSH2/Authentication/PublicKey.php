@@ -50,7 +50,7 @@ class PublicKey implements AuthenticationInterface
      */
     public function authenticate($resource)
     {
-        if (!ssh2_auth_pubkey_file($resource, $this->username, $this->pubkeyFile, $this->privkeyFile, $this->passphrase)) {
+        if (!\ssh2_auth_pubkey_file($resource, $this->username, $this->pubkeyFile, $this->privkeyFile, $this->passphrase)) {
             throw new Exception\AuthenticationFailed;
         }
     }
