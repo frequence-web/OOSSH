@@ -1,0 +1,12 @@
+{
+    "hash": "b806ac5c7512d6db4584d0de0676c8e4",
+    "packages": [
+        {
+            "package": "symfony/finder",
+            "version": "dev-master",
+            "source-reference": "57ec7198a70e6c40e450ba66cc2f8ecab98746c8"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": []
+}

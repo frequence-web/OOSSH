@@ -14,5 +14,9 @@
 
     "autoload": {
         "psr-0": { "OOSSH": "src/" }
+    },
+
+    "require": {
+        "symfony/finder": "dev-master"
     }
 }

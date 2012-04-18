@@ -3,6 +3,7 @@
 namespace OOSSH\SSH2\Authentication;
 
 use OOSSH\Authentication\AuthenticationInterface,
+    OOSSH\Util\KeyFinder,
     OOSSH\Exception as Exception;
 
 /**
@@ -36,7 +37,7 @@ class PublicKey implements AuthenticationInterface
      * @param $privkeyFile
      * @param null $passphrase
      */
-    function __construct($username, $pubkeyFile, $privkeyFile, $passphrase = null)
+    function __construct($username, $pubkeyFile = null, $privkeyFile = null, $passphrase = null)
     {
         $this->username    = $username;
         $this->pubkeyFile  = $pubkeyFile;
@@ -50,8 +51,82 @@ class PublicKey implements AuthenticationInterface
      */
     public function authenticate($resource)
     {
-        if (!\ssh2_auth_pubkey_file($resource, $this->username, $this->pubkeyFile, $this->privkeyFile, $this->passphrase)) {
+        $pubkeyFile = $this->pubkeyFile;
+        if (!is_file($pubkeyFile)) {
+            $pubkeyFile = KeyFinder::find(KeyFinder::TYPE_PUBLICKEY);
+        }
+
+        $privkeyFile = $this->privkeyFile;
+        if (!is_file($privkeyFile)) {
+            $privkeyFile = KeyFinder::find(KeyFinder::TYPE_PRIVATEKEY);
+        }
+
+        if (!\ssh2_auth_pubkey_file($resource, $this->username, $pubkeyFile, $privkeyFile, $this->passphrase)) {
             throw new Exception\AuthenticationFailed;
         }
+    }
+
+    /**
+     * @param string $passphrase
+     */
+    public function setPassphrase($passphrase)
+    {
+        $this->passphrase = $passphrase;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassphrase()
+    {
+        return $this->passphrase;
+    }
+
+    /**
+     * @param string $privkeyFile
+     */
+    public function setPrivkeyFile($privkeyFile)
+    {
+        $this->privkeyFile = $privkeyFile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrivkeyFile()
+    {
+        return $this->privkeyFile;
+    }
+
+    /**
+     * @param string $pubkeyFile
+     */
+    public function setPubkeyFile($pubkeyFile)
+    {
+        $this->pubkeyFile = $pubkeyFile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPubkeyFile()
+    {
+        return $this->pubkeyFile;
+    }
+
+    /**
+     * @param string $username
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
     }
 }
