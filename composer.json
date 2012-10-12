@@ -17,6 +17,6 @@
     },
 
     "require": {
-        "symfony/finder": "dev-master"
+        "symfony/finder": ">=2.1.0,<3.0"
     }
 }
