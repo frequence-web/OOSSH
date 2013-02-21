@@ -18,7 +18,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Connection(TEST_HOST);
+        $this->object = new Connection(TEST_HOST, isset($_ENV['SSH_PORT']) ? $_ENV['SSH_PORT'] : 22);
     }
 
     /**
