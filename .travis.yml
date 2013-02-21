@@ -7,10 +7,12 @@ php:
     - 5.4
 before_script:
     - sudo apt-get update -qq
-    - sudo apt-get install -qq openssh-server libssh2-1-dev libssh2-php
+    - sudo apt-get install -qq openssh-server libssh2-1-dev libssh2-php sshpass
     - pecl install -f ssh2-beta < .noninteractive
     - sudo useradd test_ssh --password=`php -r "echo crypt('test_ssh');"`
     - composer --prefer-source --dev install
     - export SSH_PORT=`grep Port /etc/ssh/sshd_config | cut -d " " -f2`
     - echo $SSH_PORT
+    - ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
+    - sshpass -ptest_ssh ssh-copy-id test_ssh@localhost
 script: phpunit --coverage-text
