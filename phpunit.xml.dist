@@ -24,7 +24,7 @@
     </filter>
 
     <php>
-        <const name="TEST_HOST"         value="::1" />
+        <const name="TEST_HOST"         value="localhost" />
         <const name="TEST_USER"         value="test_ssh" />
         <const name="TEST_PASSWORD"     value="test_ssh" />
         <const name="TEST_PUBKEY_FILE"  value="~/.ssh/id_rsa.pub" />
