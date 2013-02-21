@@ -3,13 +3,14 @@
 namespace OOSSH\SSH2;
 
 use OOSSH\Authentication\AuthenticationInterface;
+use OOSSH\ConnectionInterface;
 use OOSSH\Exception\BadFingerprint;
 use OOSSH\Exception\ConnectionRefused;
 
 /**
  * @author Yohan GIARELLI <yohan@giarel.li>
  */
-class Connection
+class Connection implements ConnectionInterface
 {
     const
         FINGERPRINT_MD5  = SSH2_FINGERPRINT_MD5,
@@ -66,9 +67,7 @@ class Connection
     }
 
     /**
-     * @return Connection
-     *
-     * @throws ConnectionRefused
+     * {@inheritDoc}
      */
     public function connect()
     {
@@ -84,12 +83,7 @@ class Connection
     }
 
     /**
-     * @param string $fingerprint
-     * @param int    $flags
-     *
-     * @return Connection
-     *
-     * @throws BadFingerprint
+     * {@inheritDoc}
      */
     public function check($fingerprint, $flags = null)
     {
@@ -103,9 +97,7 @@ class Connection
     }
 
     /**
-     * @param AuthenticationInterface $authentication
-     *
-     * @return Connection
+     * {@inheritDoc}
      */
     public function authenticate(AuthenticationInterface $authentication)
     {
@@ -116,10 +108,7 @@ class Connection
     }
 
     /**
-     * @param string  $command
-     * @param callable $callback
-     *
-     * @return Connection
+     * {@inheritDoc}
      */
     public function exec($command, $callback = null)
     {
@@ -137,7 +126,7 @@ class Connection
     }
 
     /**
-     * @return Connection
+     * {@inheritDoc}
      */
     public function begin()
     {
@@ -147,9 +136,7 @@ class Connection
     }
 
     /**
-     * @param callable $callback
-     *
-     * @return Connection
+     * {@inheritDoc}
      */
     public function end($callback = null)
     {
@@ -221,7 +208,7 @@ class Connection
     }
 
     /**
-     * @return boolean
+     * {@inheritDoc}
      */
     public function isAuthenticated()
     {
@@ -229,7 +216,7 @@ class Connection
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function isConnected()
     {

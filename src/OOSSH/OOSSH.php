@@ -7,5 +7,5 @@ namespace OOSSH;
  */
 class OOSSH
 {
-    const VERSION = '1.0.0-dev';
+    const VERSION = '0.1.0-dev';
 }
