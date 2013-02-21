@@ -75,7 +75,7 @@ class Connection
     {
         $flags = null === $flags ? self::FINGERPRINT_MD5 | self::FINGERPRINT_HEX : $flags;
 
-        if (strtoupper(\ssh2_fingerprint($this->resource, $flags)) !== strtoupper($fingerprint)) {
+        if (strtoupper(\ssh2_fingerprint($this->resource, $flags)) !== str_replace(':', '', strtoupper($fingerprint))) {
             throw new Exception\BadFingerprint;
         }
 
