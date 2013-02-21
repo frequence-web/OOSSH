@@ -6,5 +6,8 @@ php:
     - 5.3
     - 5.4
 before_script:
+    - sudo apt-get update -qq
+    - sudo apt-get install -qq openssh-server libssh2-php
+    - sudo adduser test_ssh -p test_ssh
     - composer --prefer-source --dev install
 script: phpunit --coverage-text
