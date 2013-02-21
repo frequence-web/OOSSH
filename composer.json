@@ -1,5 +1,4 @@
 {
-    "version": "1.0.0",
     "name": "yohang/oossh",
     "description": "Object Oriented SSH for PHP",
     "keywords": ["ssh"],
@@ -17,6 +16,11 @@
     },
 
     "require": {
+        "ext/ssh2":       "*",
         "symfony/finder": ">=2.1.0,<2.3"
+    },
+
+    "branch-alias": {
+        "dev-master": "0.1.x-dev"
     }
 }

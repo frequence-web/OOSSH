@@ -1,12 +1,9 @@
 OOSSH - Object Oriented SSH for PHP
 ===================================
 
-OOSSH is an encapsulation of the php SSH2 library.
+[![Build Status](https://travis-ci.org/frequence-web/OOSSH.png?branch=master)](https://travis-ci.org/frequence-web/OOSSH)
 
-Warning
--------
-
-OOSSH is not stable
+OOSSH is an easy-to-use object encapsulation of the php SSH2 library.
 
 Basic Usage
 -----------
