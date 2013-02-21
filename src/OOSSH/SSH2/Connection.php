@@ -2,9 +2,13 @@
 
 namespace OOSSH\SSH2;
 
-use OOSSH\Authentication\AuthenticationInterface,
-    OOSSH\Exception as Exception;
+use OOSSH\Authentication\AuthenticationInterface;
+use OOSSH\Exception\BadFingerprint;
+use OOSSH\Exception\ConnectionRefused;
 
+/**
+ * @author Yohan GIARELLI <yohan@giarel.li>
+ */
 class Connection
 {
     const
@@ -33,15 +37,24 @@ class Connection
      */
     protected $isAuthenticated;
 
+    /**
+     * @var bool
+     */
     protected $isConnected;
 
+    /**
+     * @var bool
+     */
     protected $isInBlock;
 
-    protected $commands;
+    /**
+     * @var string[]
+     */
+    protected $commands = array();
 
     /**
      * @param string $hostname
-     * @param int $port
+     * @param int    $port
      */
     public function __construct($hostname, $port = 22)
     {
@@ -50,20 +63,19 @@ class Connection
         $this->isAuthenticated = false;
         $this->isConnected     = false;
         $this->isInBlock       = false;
-        $this->commands        = array();
     }
 
     /**
-     * @throws \OOSH\Exception\ConnectionRefused
-     *
      * @return Connection
+     *
+     * @throws ConnectionRefused
      */
     public function connect()
     {
         $this->resource = \ssh2_connect($this->hostname, $this->port);
 
         if (false === $this->resource) {
-            throw new Exception\ConnectionRefused();
+            throw new ConnectionRefused;
         }
 
         $this->isConnected = true;
@@ -71,17 +83,30 @@ class Connection
         return $this;
     }
 
+    /**
+     * @param string $fingerprint
+     * @param int    $flags
+     *
+     * @return Connection
+     *
+     * @throws BadFingerprint
+     */
     public function check($fingerprint, $flags = null)
     {
         $flags = null === $flags ? self::FINGERPRINT_MD5 | self::FINGERPRINT_HEX : $flags;
 
         if (strtoupper(\ssh2_fingerprint($this->resource, $flags)) !== str_replace(':', '', strtoupper($fingerprint))) {
-            throw new Exception\BadFingerprint;
+            throw new BadFingerprint;
         }
 
         return $this;
     }
 
+    /**
+     * @param AuthenticationInterface $authentication
+     *
+     * @return Connection
+     */
     public function authenticate(AuthenticationInterface $authentication)
     {
         $authentication->authenticate($this->resource);
@@ -90,6 +115,12 @@ class Connection
         return $this;
     }
 
+    /**
+     * @param string  $command
+     * @param callable $callback
+     *
+     * @return Connection
+     */
     public function exec($command, $callback = null)
     {
         if ($this->isInBlock) {
@@ -105,6 +136,9 @@ class Connection
         return $this;
     }
 
+    /**
+     * @return Connection
+     */
     public function begin()
     {
         $this->isInBlock = true;
@@ -112,6 +146,11 @@ class Connection
         return $this;
     }
 
+    /**
+     * @param callable $callback
+     *
+     * @return Connection
+     */
     public function end($callback = null)
     {
         $stream = fopen(sprintf('ssh2.shell://%s/xterm', $this->resource), 'r+');
@@ -130,6 +169,11 @@ class Connection
         return $this;
     }
 
+    /**
+     * @param string $command
+     *
+     * @return Connection
+     */
     protected function addCommand($command)
     {
         $this->commands[] = $command;
@@ -137,6 +181,14 @@ class Connection
         return $this;
     }
 
+    /**
+     * @param $stream
+     * @param callable $callback
+     *
+     * @return Connection
+     *
+     * @throws \InvalidArgumentException
+     */
     protected function callCallback($stream, $callback)
     {
         if (!is_callable($callback)) {
@@ -168,6 +220,9 @@ class Connection
         return $this->isAuthenticated;
     }
 
+    /**
+     * @return bool
+     */
     public function isConnected()
     {
         return $this->isConnected;

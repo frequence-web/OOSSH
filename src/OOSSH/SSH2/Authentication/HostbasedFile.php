@@ -2,9 +2,12 @@
 
 namespace OOSSH\SSH2\Authentication;
 
-use OOSSH\Authentication\AuthenticationInterface,
-    OOSSH\Exception\AuthenticationFailed;
+use OOSSH\Authentication\AuthenticationInterface;
+use OOSSH\Exception\AuthenticationFailed;
 
+/**
+ * @author Yohan GIARELLI <yohan@giarel.li>
+ */
 class HostbasedFile implements AuthenticationInterface
 {
     /**
@@ -50,12 +53,12 @@ class HostbasedFile implements AuthenticationInterface
     protected $localUser;
 
     /**
-     * @param $username
-     * @param $hostname
-     * @param $pubkeyFile
-     * @param $privkeyFile
-     * @param null $passphrase
-     * @param null $localUser
+     * @param string $username
+     * @param string $hostname
+     * @param string $pubkeyFile
+     * @param string $privkeyFile
+     * @param string $passphrase
+     * @param string $localUser
      */
     public function __construct($username, $hostname, $pubkeyFile, $privkeyFile, $passphrase = null, $localUser = null)
     {
@@ -69,7 +72,8 @@ class HostbasedFile implements AuthenticationInterface
 
     /**
      * @param $resource
-     * @return mixed
+     *
+     * @throws AuthenticationFailed
      */
     public function authenticate($resource)
     {

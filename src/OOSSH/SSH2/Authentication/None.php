@@ -2,9 +2,12 @@
 
 namespace OOSSH\SSH2\Authentication;
 
-use OOSSH\Authentication\AuthenticationInterface,
-    OOSSH\Exception\AuthenticationFailed;
+use OOSSH\Authentication\AuthenticationInterface;
+use OOSSH\Exception\AuthenticationFailed;
 
+/**
+ * @author Yohan GIARELLI <yohan@giarel.li>
+ */
 class None implements AuthenticationInterface
 {
     /**
@@ -24,7 +27,8 @@ class None implements AuthenticationInterface
 
     /**
      * @param $resource
-     * @return mixed
+     *
+     * @throws AuthenticationFailed
      */
     public function authenticate($resource)
     {

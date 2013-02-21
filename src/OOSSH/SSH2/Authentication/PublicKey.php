@@ -2,12 +2,14 @@
 
 namespace OOSSH\SSH2\Authentication;
 
-use OOSSH\Authentication\AuthenticationInterface,
-    OOSSH\Util\KeyFinder,
-    OOSSH\Exception as Exception;
+use OOSSH\Authentication\AuthenticationInterface;
+use OOSSH\Exception\AuthenticationFailed;
+use OOSSH\Util\KeyFinder;
 
 /**
  * Represents a pubkey/privkey authentication
+ *
+ * @author Yohan GIARELLI <yohan@giarel.li>
  */
 class PublicKey implements AuthenticationInterface
 {
@@ -32,12 +34,12 @@ class PublicKey implements AuthenticationInterface
     private $passphrase;
 
     /**
-     * @param $username
-     * @param $pubkeyFile
-     * @param $privkeyFile
-     * @param null $passphrase
+     * @param string $username
+     * @param string $pubkeyFile
+     * @param string $privkeyFile
+     * @param string $passphrase
      */
-    function __construct($username, $pubkeyFile = null, $privkeyFile = null, $passphrase = null)
+    public function __construct($username, $pubkeyFile = null, $privkeyFile = null, $passphrase = null)
     {
         $this->username    = $username;
         $this->pubkeyFile  = $pubkeyFile;
@@ -47,7 +49,8 @@ class PublicKey implements AuthenticationInterface
 
     /**
      * @param $resource
-     * @throws \OOSSH\Exception\AuthenticationFailed
+     *
+     * @throws AuthenticationFailed
      */
     public function authenticate($resource)
     {
@@ -62,7 +65,7 @@ class PublicKey implements AuthenticationInterface
         }
 
         if (!\ssh2_auth_pubkey_file($resource, $this->username, $pubkeyFile, $privkeyFile, $this->passphrase)) {
-            throw new Exception\AuthenticationFailed;
+            throw new AuthenticationFailed;
         }
     }
 

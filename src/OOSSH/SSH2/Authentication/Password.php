@@ -2,11 +2,13 @@
 
 namespace OOSSH\SSH2\Authentication;
 
-use OOSSH\Authentication\AuthenticationInterface,
-    OOSSH\Exception as Exception;
+use OOSSH\Authentication\AuthenticationInterface;
+use OOSSH\Exception\AuthenticationFailed;
 
 /**
  * Represents a username/password authentication
+ *
+ * @author Yohan GIARELLI <yohan@giarel.li>
  */
 class Password implements AuthenticationInterface
 {
@@ -25,8 +27,8 @@ class Password implements AuthenticationInterface
     protected $password;
 
     /**
-     * @param $username
-     * @param $password
+     * @param string $username
+     * @param string $password
      */
     public function __construct($username, $password)
     {
@@ -36,12 +38,13 @@ class Password implements AuthenticationInterface
 
     /**
      * @param $resource
-     * @throws \OOSSH\Exception\AuthenticationFailed
+     *
+     * @throws AuthenticationFailed
      */
     public function authenticate($resource)
     {
         if (!\ssh2_auth_password($resource, $this->username, $this->password)) {
-            throw new Exception\AuthenticationFailed;
+            throw new AuthenticationFailed;
         }
     }
 }

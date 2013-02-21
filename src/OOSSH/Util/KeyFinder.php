@@ -6,6 +6,8 @@ use Symfony\Component\Finder\Finder;
 
 /**
  * Some utils used to find priv/pub keys
+ *
+ * @author Yohan GIARELLI <yohan@giarel.li>
  */
 class KeyFinder
 {
@@ -17,8 +19,7 @@ class KeyFinder
     /**
      * Returns the current user home directory
      *
-     * @static
-     * @return null
+     * @return string|null
      */
     public static function findUserDir()
     {
@@ -27,6 +28,12 @@ class KeyFinder
         return isset($userInfos['dir']) ? $userInfos['dir'] : null;
     }
 
+    /**
+     * @param int    $type
+     * @param string $dir
+     *
+     * @return string|null
+     */
     public static function find($type = self::TYPE_PRIVATEKEY, $dir = null)
     {
         $dir = $dir ?: self::findUserDir().'/.ssh';
