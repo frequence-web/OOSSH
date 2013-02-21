@@ -64,7 +64,7 @@ class PublicKey implements AuthenticationInterface
             $privkeyFile = KeyFinder::find(KeyFinder::TYPE_PRIVATEKEY);
         }
 
-        if (!\ssh2_auth_pubkey_file($resource, $this->username, $pubkeyFile, $privkeyFile, $this->passphrase)) {
+        if (!ssh2_auth_pubkey_file($resource, $this->username, $pubkeyFile, $privkeyFile, $this->passphrase)) {
             throw new AuthenticationFailed;
         }
     }

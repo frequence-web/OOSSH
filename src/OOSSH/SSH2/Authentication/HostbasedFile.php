@@ -77,7 +77,7 @@ class HostbasedFile implements AuthenticationInterface
      */
     public function authenticate($resource)
     {
-        if (true !== \ssh2_auth_hostbased_file(
+        if (true !== ssh2_auth_hostbased_file(
             $resource,
             $this->username,
             $this->pubkeyFile,
