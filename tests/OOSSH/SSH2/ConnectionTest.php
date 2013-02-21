@@ -1,5 +1,8 @@
 <?php
-namespace OOSSH\SSH2;
+namespace OOSSH\Tests\SSH2;
+
+use OOSSH\SSH2\Connection;
+use OOSSH\SSH2\Authentication\Password;
 
 /**
  * Test class for Connection.
@@ -43,6 +46,9 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testCheck()
     {
+        if (!defined('TEST_FINGERPRINT')) {
+            $this->markTestSkipped();
+        }
         $this->object->connect();
         $this->object->check(TEST_FINGERPRINT);
     }
@@ -62,6 +68,9 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAuthenticate($provider)
     {
+        if ($provider instanceof \OOSSH\SSH2\Authentication\PublicKey && !TEST_PUBKEY_FILE) {
+            $this->markTestSkipped();
+        }
         $this->object->connect();
         $this->object->authenticate($provider);
         $this->assertTrue($this->object->isAuthenticated());
@@ -88,9 +97,10 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function providerAuthenticate()
     {
-	if (!defined('TEST_PASSPHRASE')) {
-		define('TEST_PASSPHRASE', null);
-	}
+        if (!defined('TEST_PASSPHRASE')) {
+            define('TEST_PASSPHRASE', null);
+        }
+
         return array(
             array(new \OOSSH\SSH2\Authentication\Password(TEST_USER, TEST_PASSWORD)),
             array(new \OOSSH\SSH2\Authentication\PublicKey(TEST_USER, TEST_PUBKEY_FILE, TEST_PRIVKEY_FILE, TEST_PASSPHRASE)),

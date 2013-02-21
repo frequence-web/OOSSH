@@ -13,6 +13,4 @@ before_script:
     - composer --prefer-source --dev install
     - export SSH_PORT=`grep Port /etc/ssh/sshd_config | cut -d " " -f2`
     - echo $SSH_PORT
-    - ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
-    - sshpass -ptest_ssh ssh-copy-id test_ssh@localhost
 script: phpunit --coverage-text
