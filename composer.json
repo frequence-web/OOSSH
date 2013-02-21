@@ -19,8 +19,9 @@
         "ext/ssh2":       "*",
         "symfony/finder": ">=2.1.0,<2.3"
     },
-
-    "branch-alias": {
-        "dev-master": "0.1.x-dev"
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
     }
 }
