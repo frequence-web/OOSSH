@@ -22,6 +22,16 @@ class OOSSH
     protected $authentications;
 
     /**
+     * @param ConnectionInterface[]     $connections
+     * @param AuthenticationInterface[] $authentications
+     */
+    public function __construct(array $connections = array(), array $authentications = array())
+    {
+        $this->connections     = $connections;
+        $this->authentications = $authentications;
+    }
+
+    /**
      * @param string              $name
      * @param ConnectionInterface $connection
      *
@@ -80,10 +90,13 @@ class OOSSH
     }
 
     /**
+     * @param ConnectionInterface[]     $connections
+     * @param AuthenticationInterface[] $authentications
+     *
      * @return OOSSH
      */
-    public static function create()
+    public static function create(array $connections = array(), array $authentications = array())
     {
-        return new self;
+        return new self($connections, $authentications);
     }
 }
