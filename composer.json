@@ -16,7 +16,7 @@
     },
 
     "require": {
-        "ext/ssh2":       "*",
+        "ext-ssh2":       "*",
         "symfony/finder": ">=2.1.0,<2.3"
     },
     "extra": {
