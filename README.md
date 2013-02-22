@@ -8,24 +8,31 @@ OOSSH is an easy-to-use object encapsulation of the php SSH2 library.
 Basic Usage
 -----------
 
-    $con = new OOSSH\SSH2\Connection('host', 22);
-    $con->connect()
-        ->authenticate(new PasswordAuthentication('foo', 'bar'))
-        ->exec('cd /home/foo')
-        ->exec('ls -al', function($stdio, $stderr) { echo $stdio; })
-        ->begin()
-          ->exec('cd /var/www')
-          ->exec('mv foo bar')
-          ->exec('rm -rf cache/*')
-          ->exec('exit')
-        ->end();
+```php
+
+    $oossh = OOSSH\OOSSH::createAndLoad(
+        array(
+            'foo' => array(
+                'host'     => 'foo.bar.baz',
+                'username' => 'foo',
+                'password' => 'baz',
+            )
+        )
+    );
+
+    $oossh->get('foo')->exec('uname -a', function($stdio, $stderr) {
+        echo $stdio;
+        if ($stderr) {
+            throw new RuntimeException($stderr);
+        }
+    });
+
+```
 
 TODO
 ----
 
  * File handling (SCP)
- * Refactoring
- * Tests
 
 Contribute
 ----------
