@@ -177,7 +177,7 @@ class Connection implements ConnectionInterface
      *
      * @throws \InvalidArgumentException
      */
-    protected function callCallback($stream, $callback, $waitTime = 500)
+    protected function callCallback($stream, $callback, $waitTime = 250)
     {
         if (!is_callable($callback)) {
             throw new \InvalidArgumentException('$callback must be a callable');
@@ -185,18 +185,27 @@ class Connection implements ConnectionInterface
 
         $stdio  = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
         $stderr = ssh2_fetch_stream($stream, SSH2_STREAM_STDERR);
-        stream_set_blocking($stdio, 0);
-        stream_set_blocking($stderr, 0);
 
-        do {
-            // Hacky way to retrieve ssh stream, which is not select()able
-            usleep($waitTime * 1000);
-            $io  = stream_get_contents($stdio);
-            $err = stream_get_contents($stderr);
-            if ($io || $err) {
-                call_user_func($callback, $io, $err);
-            }
-        } while ($io || $err);
+        if ($this->isInBlock) {
+            stream_set_blocking($stdio, 0);
+            stream_set_blocking($stderr, 0);
+
+            do {
+                // Hacky way to retrieve ssh stream, which is not select()able
+                usleep($waitTime * 1000);
+                $io  = stream_get_contents($stdio);
+                $err = stream_get_contents($stderr);
+                if ($io || $err) {
+                    call_user_func($callback, $io, $err);
+                }
+            } while ($io || $err);
+
+            return $this;
+        }
+
+        stream_set_blocking($stdio, 1);
+        stream_set_blocking($stderr, 1);
+        call_user_func($callback, stream_get_contents($stdio), stream_get_contents($stderr));
 
         return $this;
     }
