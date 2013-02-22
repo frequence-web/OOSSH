@@ -193,7 +193,9 @@ class Connection implements ConnectionInterface
             usleep($waitTime * 1000);
             $io  = stream_get_contents($stdio);
             $err = stream_get_contents($stderr);
-            call_user_func($callback, $io, $err);
+            if ($io || $err) {
+                call_user_func($callback, $io, $err);
+            }
         } while ($io || $err);
 
         return $this;
