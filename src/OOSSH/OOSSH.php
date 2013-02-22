@@ -3,6 +3,7 @@
 namespace OOSSH;
 
 use OOSSH\Authentication\AuthenticationInterface;
+use OOSSH\Loader\ArrayLoader;
 
 /**
  * @author Yohan GIARELLI <yohan@giarel.li>
@@ -90,6 +91,19 @@ class OOSSH
     }
 
     /**
+     * @param array $config
+     *
+     * @return OOSSH
+     */
+    public function load(array $config)
+    {
+        $loader = new ArrayLoader($config);
+        $loader->load($this);
+
+        return $this;
+    }
+
+    /**
      * @param ConnectionInterface[]     $connections
      * @param AuthenticationInterface[] $authentications
      *
@@ -98,5 +112,15 @@ class OOSSH
     public static function create(array $connections = array(), array $authentications = array())
     {
         return new self($connections, $authentications);
+    }
+
+    /**
+     * @param array $config
+     *
+     * @return OOSSH
+     */
+    public static function createAndLoad(array $config)
+    {
+        return static::create()->load($config);
     }
 }
