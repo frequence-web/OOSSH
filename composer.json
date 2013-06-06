@@ -17,7 +17,7 @@
 
     "require": {
         "ext-ssh2":       "*",
-        "symfony/finder": ">=2.1.0,<2.3"
+        "symfony/finder": ">=2.1.0,<3.0"
     },
     "extra": {
         "branch-alias": {
